@@ -4,23 +4,25 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 const morgan = require("morgan");
-const userRoute = require("./routes/users"); // file path
-const authRoute = require("./routes/auth"); // file path
-// const nodemon = require("nodemon");
+const userRoute = require("./routes/users");
+const authRoute = require("./routes/auth");
+const postRoute = require("./routes/posts");
 
-dotenv.config(); // it is used to run dotenv 
+dotenv.config();
 
-mongoose.connect("mongodb+srv://urk:123@cluster.gu0n9q2.mongodb.net/");
+mongoose.connect(
+  process.env.MONGO_URL
+);
 
-// middlewares
-
+//middleware
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
 
-app.use("/api/users", userRoute) // when you write this url open userRoute
-app.use("/api/auth", authRoute) // when you write this url open userRoute
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/posts", postRoute);
 
 app.listen(8800, () => {
-    console.log("Backend");
-})
+  console.log("Backend server is running!");
+});
